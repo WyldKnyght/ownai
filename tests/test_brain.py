@@ -70,7 +70,7 @@ def test_reply_runs_the_chain(monkeypatch):
     """Test if the reply function runs the chain."""
 
     def fake_get_chain(_ai_id, _updated_environment):
-        return (FakeChain(), set(("input_text", "input_knowledge", "input_history")))
+        return FakeChain(), {"input_text", "input_knowledge", "input_history"}
 
     def fake_run(chain, inputs, _on_token, _on_progress):
         return chain(inputs)["output_text"]
@@ -131,7 +131,7 @@ def test_reply_chooses_the_right_way_of_processing(monkeypatch):
         run_on_multiprocessing = False
 
     def fake_get_chain(_ai_id, _updated_environment):
-        return (FakeChain(), set(("input_text", "input_knowledge", "input_history")))
+        return FakeChain(), {"input_text", "input_knowledge", "input_history"}
 
     def fake_run_chain_on_multiprocessing(chain, inputs, _on_token, _on_progress):
         RunRecorder.run_on_multiprocessing = True

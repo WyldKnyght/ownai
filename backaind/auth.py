@@ -53,10 +53,7 @@ def load_logged_in_user():
     """Load the current user and add it to the global g instance."""
     user_id = session.get("user_id")
 
-    if user_id is None:
-        g.user = None
-    else:
-        g.user = db.session.get(User, user_id)
+    g.user = None if user_id is None else db.session.get(User, user_id)
 
 
 def is_password_correct(username: str, password: str):

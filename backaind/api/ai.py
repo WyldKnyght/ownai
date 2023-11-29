@@ -13,13 +13,13 @@ def validate(ai_json):
     """Validate if the JSON is valid for an AI entry."""
     if not ai_json:
         abort(make_response(jsonify(error="The AI file cannot be empty."), 400))
-    if not "name" in ai_json:
+    if "name" not in ai_json:
         abort(make_response(jsonify(error='The property "name" is required.'), 400))
     if not isinstance(ai_json["name"], str):
         abort(
             make_response(jsonify(error='The property "name" has to be a string.'), 400)
         )
-    if not "input_keys" in ai_json:
+    if "input_keys" not in ai_json:
         abort(
             make_response(jsonify(error='The property "input_keys" is required.'), 400)
         )
@@ -44,7 +44,7 @@ def validate(ai_json):
                 400,
             )
         )
-    if not "chain" in ai_json:
+    if "chain" not in ai_json:
         abort(make_response(jsonify(error='The property "chain" is required.'), 400))
     if not isinstance(ai_json["chain"], dict):
         abort(

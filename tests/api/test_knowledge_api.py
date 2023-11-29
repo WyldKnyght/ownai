@@ -125,7 +125,7 @@ def test_get_documents(client, auth):
 
 def test_delete_document(client, auth):
     """Test if DELETE /api/knowledge/1/document/<id> deletes the document."""
-    with client, open("tests/test_documents/test.txt", "rb") as file:
+    with (client, open("tests/test_documents/test.txt", "rb") as file):
         auth.login()
         client.post(
             "/api/knowledge/1/document/txt",
@@ -135,7 +135,7 @@ def test_delete_document(client, auth):
         )
         response = client.get("/api/knowledge/1/document")
         document_id = json.loads(response.data)["items"][0]["id"]
-        response = client.delete("/api/knowledge/1/document/" + document_id)
+        response = client.delete(f"/api/knowledge/1/document/{document_id}")
         assert response.status_code == 204
         response = client.get("/api/knowledge/1/document")
         assert 0 == len(json.loads(response.data)["items"])

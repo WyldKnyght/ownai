@@ -81,8 +81,12 @@ def reply(
         and memory.load_memory_variables({})["history"]
     )
     for input_key in chain_input_keys:
-        if input_key == "input_text":
-            inputs["input_text"] = input_text
+        if input_key == "input_history":
+            inputs["input_history"] = (
+                ""
+                if memory is None
+                else memory.load_memory_variables({})["history"]
+            )
         elif input_key == "input_knowledge":
             if knowledge_id is None:
                 inputs["input_knowledge"] = []
@@ -92,12 +96,8 @@ def reply(
                     inputs["input_knowledge"] = knowledge.similarity_search(
                         input_text, k=1 if has_memory else 4
                     )
-        elif input_key == "input_history":
-            if memory is None:
-                inputs["input_history"] = ""
-            else:
-                inputs["input_history"] = memory.load_memory_variables({})["history"]
-
+        elif input_key == "input_text":
+            inputs["input_text"] = input_text
     if "gunicorn" in os.environ.get("SERVER_SOFTWARE", ""):
         return run_chain_on_gunicorn(chain, inputs, on_token, on_progress)
     return run_chain_on_multiprocessing(chain, inputs, on_token, on_progress)
