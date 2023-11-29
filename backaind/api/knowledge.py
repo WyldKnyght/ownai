@@ -25,19 +25,19 @@ def validate(knowledge_json):
     """Validate if the JSON is valid for a knowledge entry."""
     if not knowledge_json:
         abort(make_response(jsonify(error="The knowledge data cannot be empty."), 400))
-    if not "name" in knowledge_json:
+    if "name" not in knowledge_json:
         abort(make_response(jsonify(error='The property "name" is required.'), 400))
     if not isinstance(knowledge_json["name"], str):
         abort(
             make_response(jsonify(error='The property "name" has to be a string.'), 400)
         )
-    if not "embeddings" in knowledge_json:
+    if "embeddings" not in knowledge_json:
         abort(
             make_response(jsonify(error='The property "embeddings" is required.'), 400)
         )
-    if not knowledge_json["embeddings"] in ("huggingface",):
+    if knowledge_json["embeddings"] not in ("huggingface",):
         abort(make_response(jsonify(error="Unknown embeddings type."), 400))
-    if not "chunk_size" in knowledge_json:
+    if "chunk_size" not in knowledge_json:
         abort(
             make_response(jsonify(error='The property "chunk_size" is required.'), 400)
         )
@@ -75,7 +75,7 @@ def create_knowledge():
     embeddings = request.json["embeddings"]
     chunk_size = request.json["chunk_size"]
     persist_directory = os.path.join(
-        current_app.instance_path, "knowledge-" + uuid.uuid4().hex
+        current_app.instance_path, f"knowledge-{uuid.uuid4().hex}"
     )
     os.makedirs(persist_directory)
 
